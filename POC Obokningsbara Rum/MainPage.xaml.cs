@@ -18,6 +18,7 @@ using Windows.Devices.Gpio;
 using Microsoft.Azure.Devices.Client;
 //using Microsoft.ServiceBus.Messaging;
 using System.Threading;
+using System.Threading.Tasks;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -30,9 +31,9 @@ namespace POC_Obokningsbara_Rum
     {
 
         static DeviceClient deviceClient;
-        static string iotHubUri = "ObokningsbaraRum.azure-devices.net";
+        static string iotHubUri = "obokbararumsuite3558e.azure-devices.net";
         static string deviceName = "IoTTest";
-        static string deviceKey = "W97Sx7FT1ZsgT7+a2EpONkenFVMc+Sxx7PlI412v0hg=";
+        static string deviceKey = "tOp7920qQeGtyPjoRRnlOrmvHBXIHqYL6+4phP0KGTY=";
 
         private const int ledPin = 16;
         private const int pirPin = 21;
@@ -51,7 +52,7 @@ namespace POC_Obokningsbara_Rum
             timer.Interval = TimeSpan.FromSeconds(5);
             timer.Tick += Timer_Tick;
 
-            //deviceClient = DeviceClient.Create(iotHubUri, new DeviceAuthenticationWithRegistrySymmetricKey(deviceName, deviceKey), TransportType.Http1);
+            deviceClient = DeviceClient.Create(iotHubUri, new DeviceAuthenticationWithRegistrySymmetricKey(deviceName, deviceKey), TransportType.Http1);
 
             InitGPIO();
 
@@ -103,7 +104,7 @@ namespace POC_Obokningsbara_Rum
                 // update the sensor status in the UI
                 //SensorStatus.Text = "Motion detected!";
 
-                //SendDeviceToCloudMessagesAsync("occupied");
+                SendDeviceToCloudMessagesAsync("Hello World, This is Acando IoT POC sending a message");
                 toggle = 1;
             }
             else
@@ -114,10 +115,40 @@ namespace POC_Obokningsbara_Rum
                 // update the sensor status in the UI
                 //SensorStatus.Text = "No motion detected.";
 
-                //SendDeviceToCloudMessagesAsync("not occupied");
+                SendDeviceToCloudMessagesAsync("Hello World, This is Acando IoT POC sending a message");
                 toggle = 0;
             }
         }
+
+        private static async void SendDeviceToCloudMessagesAsync(string status)
+        {
+
+            var telemetryDataPoint = new
+            {
+                deviceId = deviceName,
+                status = "Acando IoT POC Hälsar Hej Hej!"
+            };
+            var messageString = JsonConvert.SerializeObject(telemetryDataPoint);
+            var message = new Message(Encoding.ASCII.GetBytes(messageString));
+
+            await deviceClient.SendEventAsync(message);
+        }
+
+        /*private static async Task ReceiveMessagesFromDeviceAsync(string partition, CancellationToken ct)
+        {
+            var eventHubReceiver = eventHubClient.GetDefaultConsumerGroup().CreateReceiver(partition, DateTime.UtcNow);
+            while (true)
+            {
+                if (ct.IsCancellationRequested) break;
+                EventData eventData = await eventHubReceiver.ReceiveAsync();
+                if (eventData == null) continue;
+
+                string data = Encoding.UTF8.GetString(eventData.GetBytes());
+
+                //Console.WriteLine("Message received. Partition: {0} Data: '{1}'", partition, data);
+
+            }
+        }*/
 
     }
 }
