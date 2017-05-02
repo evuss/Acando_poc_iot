@@ -102,6 +102,9 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StateClasses\FreeSpotsSettings.cs" />
+    <Compile Include="StateClasses\FreeSpotsState.cs" />
+    <Compile Include="StateClasses\MsgBody.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
