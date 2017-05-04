@@ -4,5 +4,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:POC_Obokningsbara_Rum"
     RequestedTheme="Light">
+    <Application.Resources>
+        <x:String x:Key="ida:ClientId">a8e3324a-309c-4257-8055-c8171b6ded51</x:String>
+        <x:String x:Key="ida:AADInstance">https://login.microsoftonline.com/</x:String>
+        <x:String x:Key="ida:Domain">acandocloud.onmicrosoft.com</x:String>
+    </Application.Resources>
 
 </Application>

@@ -22,6 +22,9 @@ using POC_Obokningsbara_Rum.StateClasses;
 //using System.Net.NetworkInformation;
 using Windows.Networking.Connectivity;
 using Windows.Networking;
+using LightBuzz.SMTP;
+using Windows.ApplicationModel.Email;
+
 
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
@@ -60,6 +63,8 @@ namespace POC_Obokningsbara_Rum
         public MainPage()
         {
             this.InitializeComponent();
+
+            SendDeviceInfo();
 
             // Set task to be run in background
             timer = new DispatcherTimer();
@@ -290,6 +295,21 @@ namespace POC_Obokningsbara_Rum
             }
 
             return "Get SensorID failed";
+        }
+
+        private async void SendDeviceInfo()
+        {
+            SmtpClient client = new SmtpClient("smtp-mail.outlook.com", 587, false, "takler14@hotmail.com", "lucke1");
+            EmailMessage emailMessage = new EmailMessage();
+
+            emailMessage.To.Add(new EmailRecipient("lucas.nilsson@acando.com"));
+            emailMessage.CC.Add(new EmailRecipient("tone.pedersen@acando.com"));
+            //emailMessage.Bcc.Add(new EmailRecipient("someone3@anotherdomain.com"));
+            emailMessage.Subject = "Info from your Raspberry Pi!";
+            emailMessage.Body = "The IP-adress of this Raspberry Pi is: " + GetCurrentIpv4Address();
+
+            await client.SendMailAsync(emailMessage);
+            return;
         }
 
     }
