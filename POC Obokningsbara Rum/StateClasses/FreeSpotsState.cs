@@ -5,7 +5,7 @@ namespace POC_Obokningsbara_Rum.StateClasses {
         public string PendingStatus = "";    // State to take after smoothing
         public DateTime PendingStatusTime = new DateTime(0);
         public DateTime LastSendTime = new DateTime(0);
-        public Boolean LEDGreenOn = false;
+        public Boolean LEDGreenOn = true;
 
         public FreeSpotsState() { }
     }

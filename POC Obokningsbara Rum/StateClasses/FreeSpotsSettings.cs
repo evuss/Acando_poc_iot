@@ -26,10 +26,10 @@
                 timerStateFSmoothing = 300;       // Minimum time with ONLY new PIR state Free, before CurrentState is changed to Free.
             }
             else if (settings == mode.DEBUG1) { // Debug: Imediately show sensor detection (Ie good for identify PIRs own timer setting
-                timerCheckIntervall = 5;           // How often the PIR Sensor is read.
+                timerCheckIntervall = 1;           // How often the PIR Sensor is read.
                 timerKeepAliveIntervall = 600;     // Maximum Seconds until a "keep alive" message is sent.
                 timerStateOSmoothing = 0;         // Minimum time with ONLY new PIR state Occupied, before CurrentState is changed to Occupied. 
-                timerStateFSmoothing = 0;       // Minimum time with ONLY new PIR state Free, before CurrentState is changed to Free.
+                timerStateFSmoothing = 0;      // Minimum time with ONLY new PIR state Free, before CurrentState is changed to Free.
             }
             else if (settings == mode.DEBUG2) { // Debug: Settings for quicker feedback.
                 timerCheckIntervall = 30;           // How often the PIR Sensor is read.

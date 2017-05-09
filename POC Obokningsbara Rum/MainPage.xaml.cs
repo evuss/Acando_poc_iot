@@ -98,7 +98,7 @@ namespace POC_Obokningsbara_Rum
             // set up the LED on the defined GPIO pin
             // and set it to High to turn off the LED
             ledGreen = gpio.OpenPin(greenLedPin);
-            ledGreen.Write(GpioPinValue.High);
+            ledGreen.Write(GpioPinValue.Low);
             ledGreen.SetDriveMode(GpioPinDriveMode.Output);
 
             ledRed = gpio.OpenPin(redLedPin);
@@ -158,14 +158,17 @@ namespace POC_Obokningsbara_Rum
                         if (state.PendingStatus == "O")
                         {
                             LedSetState(ledRed, true);  // Turn on RED LED
+                            LedSetState(ledGreen, false);
                         }
                         else
                         {
                             LedSetState(ledRed, false); // Turn off RED LED
+                            LedSetState(ledGreen, true);
                         }
 
                         tmpMsg.Status = state.PendingStatus;   // Set the new status to the message
                         tmpMsg.Change = "T"; // This is a change of status (T)rue
+                        tmpMsg.TS = DateTime.Now.ToString();
 
                         SendDeviceToCloudMessagesAsync(tmpMsg);
 
@@ -174,11 +177,12 @@ namespace POC_Obokningsbara_Rum
                         state.LastSendTime = DateTime.Now;
 
                         // Toggle green led to show a message has been sent
-                        LedToggleGreen();
+                        //LedToggleGreen();
                     }
                     else if ((DateTime.Now - state.LastSendTime).TotalSeconds > settings.timerKeepAliveIntervall)
                     {  // No Change of status. Is it time fot "is alive"?
                         tmpMsg.Change = "F";   // Status change (F)alse. (Set if we will send (is alive)
+                        tmpMsg.TS = DateTime.Now.ToString();
 
                         // Send message to IoT hub
                         SendDeviceToCloudMessagesAsync(tmpMsg);
@@ -306,7 +310,7 @@ namespace POC_Obokningsbara_Rum
             emailMessage.CC.Add(new EmailRecipient("tone.pedersen@acando.com"));
             //emailMessage.Bcc.Add(new EmailRecipient("someone3@anotherdomain.com"));
             emailMessage.Subject = "Info from your Raspberry Pi!";
-            emailMessage.Body = "The IP-adress of this Raspberry Pi is: " + GetCurrentIpv4Address();
+            emailMessage.Body = "The IP-adress of this Raspberry Pi is: " + GetCurrentIpv4Address() + "\nAnd MAC-adress as: " + GetSensorId();
 
             await client.SendMailAsync(emailMessage);
             return;
