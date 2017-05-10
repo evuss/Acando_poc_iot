@@ -223,6 +223,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\PublishProfiles\ObokbaraRumApp - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\ObokbaraRumApp-API - Web Deploy.pubxml" />
     <None Include="Properties\Settings.settings">
       <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

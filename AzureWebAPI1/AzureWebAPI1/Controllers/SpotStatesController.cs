@@ -17,18 +17,18 @@ namespace AzureWebAPI1.Controllers
     {
         private SpotStateContext db = new SpotStateContext();
 
-        /*
+        
         // GET: api/SpotStates
         public IQueryable<SpotState> GetSpotStates()
         {
             return db.SpotStates;
         }
-
+        
         // GET: api/SpotStates/5
         [ResponseType(typeof(SpotState))]
         public async Task<IHttpActionResult> GetSpotState(string id)
         {
-            SpotState spotState = await db.SpotStates.FindAsync(id);
+            SpotState spotState = await db.SpotStates.Where(x => x.TS == db.SpotStates.Max(p => p.TS)).FirstAsync();
             if (spotState == null)
             {
                 return NotFound();
@@ -36,7 +36,7 @@ namespace AzureWebAPI1.Controllers
 
             return Ok(spotState);
         }
-
+        /*
         // PUT: api/SpotStates/5
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PutSpotState(string id, SpotState spotState)
@@ -131,7 +131,7 @@ namespace AzureWebAPI1.Controllers
 
         private bool SpotStateExists(string id)
         {
-            return db.SpotStates.Count(e => e.SpotID == id) > 0;
+            return db.SpotStates.Count(e => e.ID == id) > 0;
         }
     }
 }
