@@ -1,7 +1,7 @@
 			$(document).ready(function (){
-				var spotFormApiUrl = '/api/spots/';	// API URL for updating/creating/dsiplaying spot recoords
+                var spotFormApiUrl = 'http://obokbararumapp-frontend.azurewebsites.net/api/spots/' //'/api/spots/';	// API URL for updating/creating/dsiplaying spot recoords
 				//var spotStatusFormApiUrl = '../spotstatusget.php';		 // API URL to retrieve spot statuses (Mockup ../spotstatusget.php)
-				var spotStatusFormApiUrl = '/api/spotstatus';		 // API URL to retrieve spot statuses (Mockup ../spotstatusget.php)
+                var spotStatusFormApiUrl = 'http://obokbararumapp-frontend.azurewebsites.net/api/spots/api/spotstatus';		 // API URL to retrieve spot statuses (Mockup ../spotstatusget.php)
 				
 				$('.cform').cForm();  //Apply cForm layout
 				
