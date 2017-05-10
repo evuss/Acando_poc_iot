@@ -1,0 +1,239 @@
+<!Doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<link rel="shortcut icon" href="ficon.png">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+		<link rel="apple-touch-icon" href="apple-touch-icon.png" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+		<title>Spot maintenance cockpit</title>
+		<meta name="author" content="Mario Jäckle">
+
+		<link rel="stylesheet" type="text/css" href="css/normalize.min.css">
+		<!--<link href='http://fonts.googleapis.com/css?family=Droid+Sans:400,700' rel='stylesheet' type='text/css'>-->
+		<link rel="stylesheet" type="text/css" href="css/cform.style.css">
+		<link rel="stylesheet" type="text/css" href="css/cockpit.css">
+		<link rel="stylesheet" type="text/css" href="css/sunburst.theme.css">
+	</head>
+	<body>
+		<header>
+			<div class="center">
+				<h1>Spot maintenance cockpit <small> - update and diagnose</small></h1>
+				<ul class="clearfix">
+					<li><a href="#about">About</a></li>
+				    <li><a href="#spot">Spot</a></li>
+				    <li><a href="#spotstatus">Spot status</a></li>
+				    <li><a href="#eventhub">Event Hub</a></li>
+				</ul>
+			</div>
+		</header>
+		<div class="center">
+			<!-------------------------------------------------->
+			<section id="about">
+				<a name="about"></a>
+				<div class="row clearfix">
+					<div class="col100">
+						<h2>Spot maintenance cockpit</h2>
+						<h3>Maintain spots and diagnose database content and apis</h3>
+					</div>
+				</div>
+				<div class="row clearfix">
+					<div class="col50">
+						<p>
+							This site contains tools to create, update and display spot information in the backend datase. In addition there a number of diagnostic tools
+							that can be used to test the different parts of the backend solution.<BR><BR>
+							An authorization token is required to write and to read sensitive information through the api. Please supply one here.<BR><BR>
+						</p>
+					<div class="col50 cform">
+						<label>Authorization Token</label>
+						<input type="text" id="AuthToken" name="AuthToken" placeholder="Authorization token required for api write and read" size=50>
+					</div>
+					</div>
+					<div class="col25">&nbsp;</div>
+					<div class="col25 github">
+						<a href="https://gator3044.hostgator.com/~mkoniako/spots/">
+							<img src="imgs/mapicon.jpg">
+						</a><br/>
+						<a href="">Office map</a>
+					</div>
+				</div>
+			</section>
+			
+			<!---Spot----------------------------------------------->
+			<section id="spot">
+					<form id="SpotForm" name="SpotForm" method="POST" action="../../spotset.php">
+						<div class="cform">
+							<a name="spot"></a>
+							<h2>Spot maintenance</h2>
+							<h3>AuthToken (top of page) and SpotID are always required for spot maintenance. Fields that are not supplied will be left "as is" in the database.
+							(By only supplying SpotID you can therefore display an entry.)
+							<!-- Any SensorID supplied must already be connected to the Event Hub. -->
+							Check the "Results" field after each update.</h3>
+						
+							<div class="row clearfix">
+								<h3>Required fields</h3>
+								<div class="col50">
+									<label>Spot ID</label>
+									<input type="text" id="SpotID" name="SpotID" placeholder="Unique id of the spot" ssize=50>
+								</div>
+							</div>
+							<div class="row clearfix">
+								<h3>Optional fields</h3>
+								<div class="col50">
+									<label>Spot Name</label>
+									<input type="text" id="SpotName" name="SpotName" placeholder="Description of the spot (room or seat)" size=50>
+								</div>
+								<div class="col50">
+									<label>Sensor ID</label>
+									<input type="text" id="SensorID" name="SensorID" placeholder="MAC-address in the form XX-XX-XX-XX-XX-XX" size=50>
+								</div>
+							</div>
+							<div class="row clearfix">
+								<div class="col25">
+									<label>X Postion</label>
+									<input type="text" id="XPos" name="XPos" placeholder="Pixel position in image">
+								</div>
+								<div class="col25">
+									<label>Y Postion</label>
+									<input type="text" id="YPos" name="YPos" placeholder="Pixel position in image">
+								</div>
+								<div class="col25">
+									<label>Status image type</label>
+									<input type="text" id="ImageSize" name="ImageSize" placeholder="Number from 0 and higher">
+								</div>
+							</div>
+						</div>
+						<div class="row clearfix">
+							<h3>Update and retrieve results</h3>
+							<!--<div class="col25">
+								<label>&nbsp;</label>
+								<input type="button" value="Create" id="SpotCreate" name="SpotCreate">
+							</div>-->
+							<div class="col50">
+								<label>&nbsp;</label>
+								<input type="button" value="Create / Update" id="SpotUpdate" name="SpotUpdate">
+							</div>
+							<div class="col50">
+								<label>Results</label>
+								<textarea id="SpotResults" name="SpotResults" rows="10"></textarea>
+							</div>
+						</div>
+					</form>
+			</section>
+			
+			<!---SpotStatus----------------------------------------------->
+			<section id="spotstatus">
+					<form id="SpotStatusForm" name="SpotStatusForm" method="POST" action="../../spotstatusget.php">
+						<div class="cform">
+							<a name="spotstatus"></a>
+							<h2>Diagnose: Spot Status</h2>
+							<h3>Test the spot status api used by the dynamic office map to retrieve current status for spots.
+							Spots with status change since "Time stamp" will be retrieved.</h3>
+						
+							<div class="row clearfix">
+								<h3>Optional fields</h3>
+								<div class="col50">
+									<label>Time stamp</label>
+									<input type="text" id="TS" name="TS" placeholder="YYYYMMDDHHmmSS" size=50>
+								</div>
+							</div>
+						</div>
+						<div class="row clearfix">
+							<h3>Retrieve results</h3>
+							<div class="col50">
+								<label>&nbsp;</label>
+								<input type="submit" value="Retrieve" id="submit" name="SubmitSpot">
+							</div>
+							<div class="col50">
+								<label>Results</label>
+								<textarea id="SpotStatusResults" name="SpotStatusResults" rows="10"></textarea>
+							</div>
+						</div>
+					</form>
+			</section>
+			
+			<!---EventHub----------------------------------------------->
+			<section id="eventhub">
+					<form id="EventHubForm" name="EventHubForm" method="POST" action="dummy.php">
+						<div class="cform">
+							<a name="eventhub"></a>
+							<h2>Diagnose: EventHub message</h2>
+							<h3>All the Eent Hub connection information is required. For a "normal" event hub mssasge all message body fields should also be
+							supplied.</h3>
+						
+							<div class="row clearfix">
+								<h3>Event Hub Settings (Required)</h3>
+								<div class="col25">
+									<label>Event Hub name space</label>
+									<input type="text" id="EventHubNS" name="EventHubNS" placeholder="Name space name" size=25 value="ehnTestHubns">
+								</div>
+								<div class="col25">
+									<label>Event Queue path</label>
+									<input type="text" id="EventQueue" name="EventQueue" placeholder="Queue name" size=25 value="ehntesthub">
+								</div>
+							</div>
+							<div class="row clearfix">
+								<div class="col25">
+									<label>SAS Key Name</label>
+									<input type="text" id="SasKeyName" name="SasKeyName" placeholder="Name of SAS key" size=25 value="ehntesthub_sender">
+								</div>
+								<div class="col50">
+									<label>SAS Key</label>
+									<input type="text" id="SasKey" name="SasKey" placeholder="SAS Key" size=50 value="7nSxxVyLpcUlmTbkvd7I7m+X32vSjLgbzDArgClKNz4=">
+								</div>
+							</div>						
+							<div class="row clearfix">
+								<h3>Event message body</h3>
+								<div class="col50">
+									<label>Sensor ID</label>
+									<input type="text" id="SensorID" name="SensorID" placeholder="MAC-address in the form XX-XX-XX-XX-XX-XX" size=50>
+								</div>
+								<div class="col25">
+									<label>Sensor Status</label>
+									<input type="text" id="SensorStatus" name="SensorStatus" placeholder="O or F" size=25>
+								</div>							
+							</div>
+							<div class="row clearfix">
+								<div class="col25">
+									<label>Time stamp (not used)</label>
+									<input type="text" id="TS" name="TS" placeholder="YYYYMMDDHHmmSS">
+								</div>
+								<div class="col25">
+									<label>Changed?</label>
+									<input type="text" id="Change" name="Change" placeholder="T of F">
+								</div>
+								<div class="col25">
+									<label>Last IP-address</label>
+									<input type="text" id="LastIp" name="LastIp" placeholder="aaa.bbb.ccc.ddd">
+								</div>
+							</div>
+						</div>
+						<div class="row clearfix">
+							<h3>Send Message</h3>
+							<div class="col50">
+								<label>&nbsp;</label>
+								<input type="submit" value="Send message" id="submit" name="SubmitEventHub">
+							</div>
+							<div class="col50">
+								<label>Results</label>
+								<textarea id="EventHubResults" name="EventHubResults" rows="10"></textarea>
+							</div>
+						</div>
+					</form>
+			</section>
+			
+			<footer>
+				<a href="https://gator3044.hostgator.com/~mkoniako/spots/">Free spots IoT</a> | 
+				by Acando | <a href="www.acando.com">www.acando.com</a>
+			</footer>
+		</div>
+
+
+		<script src="../scripts/jquery-2.1.4.min.js"></script>
+		<script src="js/servicebusjssdk-1.2.min.js"></script>
+		<script src="js/jquery.cform.js"></script>
+		<script src="js/cockpit.js"></script>
+	</body>
+</html>
