@@ -11,6 +11,7 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using AzureWebAPI1.Models;
 
+
 namespace AzureWebAPI1.Controllers
 {
     public class SpotStatusController : ApiController

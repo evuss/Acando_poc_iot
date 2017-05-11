@@ -1,10 +1,34 @@
 			$(document).ready(function (){
-                var spotFormApiUrl = 'http://obokbararumapp-frontend.azurewebsites.net/api/spots/' //'/api/spots/';	// API URL for updating/creating/dsiplaying spot recoords
+                var spotFormApiUrl = 'http://obokbararumapp-api.azurewebsites.net/api/spots' //'/api/spots/';	// API URL for updating/creating/dsiplaying spot recoords
 				//var spotStatusFormApiUrl = '../spotstatusget.php';		 // API URL to retrieve spot statuses (Mockup ../spotstatusget.php)
-                var spotStatusFormApiUrl = 'http://obokbararumapp-frontend.azurewebsites.net/api/spots/api/spotstatus';		 // API URL to retrieve spot statuses (Mockup ../spotstatusget.php)
+                var spotStatusFormApiUrl = 'http://obokbararumapp-api.azurewebsites.net/api/spotstates/';		 // API URL to retrieve spot statuses (Mockup ../spotstatusget.php)
 				
 				$('.cform').cForm();  //Apply cForm layout
-				
+                $("#SpotStatusForm").on('submit', function () {
+                    console.log("klickat till retrieve");
+                   /* var name = $("#name").val();
+                    var email = $("#email").val();
+                    var password = $("#password").val();
+                    var contact = $("#contact").val();
+
+                    var dataString = 'name1=' + name + '&email1=' + email + '&password1=' + password + '&contact1=' + contact;
+                    if (name == '' || email == '' || password == '' || contact == '') {
+                        alert("Please Fill All Fields");
+                    }
+                    else {
+                        // AJAX Code To Submit Form.
+                        $.ajax({
+                            type: "POST",
+                            url: "ajaxsubmit.php",
+                            data: dataString,
+                            cache: false,
+                            success: function (result) {
+                                alert(result);
+                            }
+                        });
+                    }
+                    return false;*/
+                });
 				// Handle menu scroll target (exclude top header)
 				$('header a').click(function (event) {
 					console.log("header a: clicked");
@@ -138,23 +162,35 @@
 						'Sending json:\n' +
 						JSON.stringify(jsonOut,null,2)
 					);
+
+                    jquery.ajax(objektMedsettings, funktionsomkallasvidsuccess, funktionsomkallasviderror);
+
+
 						
 					// Call api
-					$.post(spotStatusFormApiUrl, jsonOut, function(data){	// API call was successfull
-						// API returned document
-						if(typeof data.TS !== undefined){
-							// Success: There is a variable Result
-							prependWithSeparator(taResults, 'Retrieval was successful\n\nReceived json:\n' + JSON.stringify(data,null,2));
-						}
-						else {  // Fail: API call successfull but no result variable
-							prependWithSeparator(taResults, 'Retrieval failed with "' + data.Result + '"\n\nReceived json:\n' + JSON.stringify(data,null,2));
-							alert('Retrieval failed! See Result textbox.');
-						}
+                    $.ajax({
+                        type: "GET",
+                        url: spotStatusFormApiUrl,
+                        dataType: "jsonp",
+                        success: function (data) {
+                            console.log("got data from get sotstatusformapiurl", data);
+                             // $.post(spotStatusFormApiUrl, jsonOut, function (data) {	//  API call was successfull
+						    // API returned document
+						    if(typeof data.TS !== undefined){
+							    // Success: There is a variable Result
+							    prependWithSeparator(taResults, 'Retrieval was successful\n\nReceived json:\n' + JSON.stringify(data,null,2));
+						    }
+						    else {  // Fail: API call successfull but no result variable
+							    prependWithSeparator(taResults, 'Retrieval failed with "' + data.Result + '"\n\nReceived json:\n' + JSON.stringify(data,null,2));
+							    alert('Retrieval failed! See Result textbox.');
+						    }
 							
-					}).error(function(data){  // Fail: Backend not reached
-						prependWithSeparator(taResults, 'Retrieval failed with "Backend not reached"\n\n' + JSON.stringify(data,null,2));
-						alert('Retrieval failed! See Result textbox.');
-					});
+                        },
+                        error: function(data) {  // Fail: Backend not reached
+						    prependWithSeparator(taResults, 'Retrieval failed with "Backend not reached"\n\n' + JSON.stringify(data,null,2));
+						    alert('Retrieval failed! See Result textbox.');
+                        }
+                    })
 				});
 				
 								

@@ -26,7 +26,7 @@ namespace AzureWebAPI1.Controllers
         
         // GET: api/SpotStates/5
         [ResponseType(typeof(SpotState))]
-        public async Task<IHttpActionResult> GetSpotState(string id)
+        public async Task<IHttpActionResult> GetSpotState(string id)//
         {
             SpotState spotState = await db.SpotStates.Where(x => x.TS == db.SpotStates.Max(p => p.TS)).FirstAsync();
             if (spotState == null)

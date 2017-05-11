@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
+using AzureWebAPI1.Models;
+using System.Data.SqlClient;
 
 namespace AzureWebAPI1.Models
 {
