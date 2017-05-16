@@ -4,31 +4,7 @@
                 var spotStatusFormApiUrl = 'http://obokbararumapp-api.azurewebsites.net/api/spotstates/';		 // API URL to retrieve spot statuses (Mockup ../spotstatusget.php)
 				
 				$('.cform').cForm();  //Apply cForm layout
-                $("#SpotStatusForm").on('submit', function () {
-                    console.log("klickat till retrieve");
-                   /* var name = $("#name").val();
-                    var email = $("#email").val();
-                    var password = $("#password").val();
-                    var contact = $("#contact").val();
-
-                    var dataString = 'name1=' + name + '&email1=' + email + '&password1=' + password + '&contact1=' + contact;
-                    if (name == '' || email == '' || password == '' || contact == '') {
-                        alert("Please Fill All Fields");
-                    }
-                    else {
-                        // AJAX Code To Submit Form.
-                        $.ajax({
-                            type: "POST",
-                            url: "ajaxsubmit.php",
-                            data: dataString,
-                            cache: false,
-                            success: function (result) {
-                                alert(result);
-                            }
-                        });
-                    }
-                    return false;*/
-                });
+                
 				// Handle menu scroll target (exclude top header)
 				$('header a').click(function (event) {
 					console.log("header a: clicked");
@@ -137,7 +113,7 @@
 				}
 				//$('#SpotCreate').bind('click', { 'button': 'create' }, SpotButtonClick);
 				$('#SpotUpdate').bind('click', { 'button': 'update' }, SpotButtonClick);
-				
+
 				// SpotStatus form -  Test retriving Spot statuses
 				////////////////////////////////////////////////////////////////////////////////////////////////
 				var spotStatusForm = $('#SpotStatusForm');
@@ -163,15 +139,15 @@
 						JSON.stringify(jsonOut,null,2)
 					);
 
-                    jquery.ajax(objektMedsettings, funktionsomkallasvidsuccess, funktionsomkallasviderror);
-
-
 						
 					// Call api
                     $.ajax({
-                        type: "GET",
-                        url: spotStatusFormApiUrl,
+                        type: "POST",
+                        url: spotStatusFormApiUrl, 
+                        contentType: "application/json; charset=utf-8",
                         dataType: "jsonp",
+                        jsonp: '$callback',
+                        //data: json,
                         success: function (data) {
                             console.log("got data from get sotstatusformapiurl", data);
                              // $.post(spotStatusFormApiUrl, jsonOut, function (data) {	//  API call was successfull
@@ -186,11 +162,18 @@
 						    }
 							
                         },
-                        error: function(data) {  // Fail: Backend not reached
+                        error: function (data) {  // Fail: Backend not reached
+                            console.log("failed and the data is", data);
 						    prependWithSeparator(taResults, 'Retrieval failed with "Backend not reached"\n\n' + JSON.stringify(data,null,2));
-						    alert('Retrieval failed! See Result textbox.');
+                            alert('Retrieval failed! See Result textbox.');
+                            
                         }
+               
                     })
+                    // create seasons array and and repeat ajax call until all results are returned 
+                    function callback(result) {
+                        alert(JSON.stringify(result))
+                    }
 				});
 				
 								

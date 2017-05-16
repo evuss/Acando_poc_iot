@@ -1,0 +1,344 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="shortcut icon" href="images/ficon.png">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<link rel="apple-touch-icon" href="apple-touch-icon.png" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<title>Test - Lediga platser & rum</title>
+<script src="scripts/jquery.min.js"></script>
+<script src="scripts/jcanvas.min.js"></script>
+<style>
+</style>
+</head>
+</html>
+<body>
+    <div id="container">
+        <canvas id="myCanvas" width="1512" height="850">Loading office map...</canvas>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            //var apiSpotstatusGetUrl = "spotstatusget.php";
+            var apiSpotstatusGetUrl = "/api/spotstatus";
+            var TS = "00000000000001";	// Default time to fetch status changes from
+            var officeImage = "images/karta.png";  // Office map image
+            var updateInterval = 5000;	// Number of ms between status updates
+            var statusIcons = [
+                { 	// Image size 0 Workplace Horizontal - View south
+                    "F": {
+                        source: "images/platsikoner0.png",
+                        sWidth: 26,
+                        sHeight: 18,
+                        cropFromCenter: true,
+                        sx: 0,
+                        sy: 0,
+                        scale: 1
+                    },
+                    "O": {
+                        source: "images/platsikoner0.png",
+                        sWidth: 26,
+                        sHeight: 18,
+                        cropFromCenter: true,
+                        sx: 26,
+                        sy: 0,
+                        scale: 1
+                    },
+                    "U": {
+                        source: "images/platsikoner0.png",
+                        sWidth: 26,
+                        sHeight: 18,
+                        cropFromCenter: true,
+                        sx: 52,
+                        sy: 0,
+                        scale: 1
+                    }
+                    ,
+                    "B": {
+                        source: "images/platsikoner0.png",
+                        sWidth: 26,
+                        sHeight: 18,
+                        cropFromCenter: true,
+                        sx: 78,
+                        sy: 0,
+                        scale: 1
+                    }
+                },
+                {	// Image size 1 Workplace Vertical - View west
+                    "F": {
+                        source: "images/platsikoner1.png",
+                        sWidth: 18,
+                        sHeight: 26,
+                        cropFromCenter: true,
+                        sx: 0,
+                        sy: 0,
+                        scale: 1
+                    },
+                    "O": {
+                        source: "images/platsikoner1.png",
+                        sWidth: 18,
+                        sHeight: 26,
+                        cropFromCenter: true,
+                        sx: 18,
+                        sy: 0,
+                        scale: 1
+                    },
+                    "U": {
+                        source: "images/platsikoner1.png",
+                        sWidth: 18,
+                        sHeight: 26,
+                        cropFromCenter: true,
+                        sx: 36,
+                        sy: 0,
+                        scale: 1
+                    },
+                    "B": {
+                        source: "images/platsikoner1.png",
+                        sWidth: 18,
+                        sHeight: 26,
+                        cropFromCenter: true,
+                        sx: 54,
+                        sy: 0,
+                        scale: 1
+                    }
+                },
+                { 	// Image size 2 Workplace Horizontal - View North
+                    "F": {
+                        source: "images/platsikoner2.png",
+                        sWidth: 26,
+                        sHeight: 18,
+                        cropFromCenter: true,
+                        sx: 0,
+                        sy: 0,
+                        scale: 1
+                    },
+                    "O": {
+                        source: "images/platsikoner2.png",
+                        sWidth: 26,
+                        sHeight: 18,
+                        cropFromCenter: true,
+                        sx: 26,
+                        sy: 0,
+                        scale: 1
+                    },
+                    "U": {
+                        source: "images/platsikoner2.png",
+                        sWidth: 26,
+                        sHeight: 18,
+                        cropFromCenter: true,
+                        sx: 52,
+                        sy: 0,
+                        scale: 1
+                    }
+                    ,
+                    "B": {
+                        source: "images/platsikoner2.png",
+                        sWidth: 26,
+                        sHeight: 18,
+                        cropFromCenter: true,
+                        sx: 78,
+                        sy: 0,
+                        scale: 1
+                    }
+                },
+                {	// Image size 3 Workplace Vertical - View east
+                    "F": {
+                        source: "images/platsikoner3.png",
+                        sWidth: 18,
+                        sHeight: 26,
+                        cropFromCenter: true,
+                        sx: 0,
+                        sy: 0,
+                        scale: 1
+                    },
+                    "O": {
+                        source: "images/platsikoner3.png",
+                        sWidth: 18,
+                        sHeight: 26,
+                        cropFromCenter: true,
+                        sx: 18,
+                        sy: 0,
+                        scale: 1
+                    },
+                    "U": {
+                        source: "images/platsikoner3.png",
+                        sWidth: 18,
+                        sHeight: 26,
+                        cropFromCenter: true,
+                        sx: 36,
+                        sy: 0,
+                        scale: 1
+                    },
+                    "B": {
+                        source: "images/platsikoner3.png",
+                        sWidth: 18,
+                        sHeight: 26,
+                        cropFromCenter: true,
+                        sx: 54,
+                        sy: 0,
+                        scale: 1
+                    }
+                },
+                {	// Image size 4 Room Horizontal - View south
+                    "F": {
+                        source: "images/rum4.png",
+                        sWidth: 54,
+                        sHeight: 46,
+                        cropFromCenter: true,
+                        sx: 0,
+                        sy: 0,
+                        scale: 1
+                    },
+                    "O": {
+                        source: "images/rum4.png",
+                        sWidth: 54,
+                        sHeight: 46,
+                        cropFromCenter: true,
+                        sx: 54,
+                        sy: 0,
+                        scale: 1
+                    },
+                    "U": {
+                        source: "images/rum4.png",
+                        sWidth: 54,
+                        sHeight: 46,
+                        cropFromCenter: true,
+                        sx: 162,
+                        sy: 0,
+                        scale: 1
+                    },
+                    "B": {
+                        source: "images/rum4.png",
+                        sWidth: 54,
+                        sHeight: 46,
+                        cropFromCenter: true,
+                        sx: 138,
+                        sy: 0,
+                        scale: 1
+                    }
+                },
+                {	// Image size 5 Room Horizontal - View south
+                    "F": {
+                        source: "images/rum5.png",
+                        sWidth: 46,
+                        sHeight: 54,
+                        cropFromCenter: true,
+                        sx: 0,
+                        sy: 0,
+                        scale: 1
+                    },
+                    "O": {
+                        source: "images/rum5.png",
+                        sWidth: 46,
+                        sHeight: 54,
+                        cropFromCenter: true,
+                        sx: 46,
+                        sy: 0,
+                        scale: 1
+                    },
+                    "U": {
+                        source: "images/rum5.png",
+                        sWidth: 46,
+                        sHeight: 54,
+                        cropFromCenter: true,
+                        sx: 92,
+                        sy: 0,
+                        scale: 1
+                    },
+                    "B": {
+                        source: "images/rum5.png",
+                        sWidth: 46,
+                        sHeight: 54,
+                        cropFromCenter: true,
+                        sx: 138,
+                        sy: 0,
+                        scale: 1
+                    }
+                }
+            ];
+
+            var $mycanvas = $("#myCanvas");
+
+            $mycanvas.drawImage({
+                source: officeImage,
+                x: 0,
+                y: 0,
+                fromCenter: false,
+                load: initializeFetch
+            });
+
+
+            function initializeFetch() {
+                updateCycle();
+                setInterval(updateCycle, updateInterval);
+            }
+
+            //var ImageType = 1;  //Debug: Test that interval update works
+            function updateCycle() {
+
+                // Debug: Test that interval update works
+                /*if(ImageType==1){
+                    ImageType=0;
+                }
+                else  {
+                    ImageType = 1;
+                }*/
+
+                // Request status changes through api and call function update spots.
+                //console.log("Sending timestamp " + TS);
+                $.post(apiSpotstatusGetUrl, { "TS": "00000000000001" }, function (data) {
+                    if (typeof data.TS !== undefined) {	// we have gotten a timestamp. call was successfull
+                        if (typeof data.SpotStates !== undefined && data.SpotStates.length > 0) {	// There is a spots array with at least 1 SpotStates
+                            console.log("Succeeded in getting SpotStates statuses. " + data.SpotStates.length + " spots have changed status.");
+                            updateSpots(data.SpotStates);
+                            TS = data.TS;	// Nothing has failed so far. Record the fetch as successfull by updating the timestamp of last successfull api call.
+                            console.log("Updated status icons until " + TS);
+                        }
+                        else {
+                            console.log("Succeeded in getting SpotStates statuses, but no spots have changed status.");
+                        }
+                    }
+                    else {
+                        console.log("Failed to get SpotStates statuses.");
+                    }
+                });
+            }
+
+            testState = ["F", "O", "U", "B"];
+
+            function updateSpots(spots) {
+                $.each(spots, function (index, spot) {
+                    // For Test: Set random icon
+                    spot.SensorStatus = "F";
+                    // Erase previous icon.
+                    //Remove this sextion if not needed! (Ie all icons have same size and are none transparent)
+                    $mycanvas.drawImage({
+                        x: spot.XPos,
+                        y: spot.YPos,
+                        source: officeImage,
+                        sWidth: statusIcons[spot.ImageType][spot.SensorStatus].sWidth * statusIcons[spot.ImageType][spot.SensorStatus].scale,
+                        sHeight: statusIcons[spot.ImageType][spot.SensorStatus].sHeight * statusIcons[spot.ImageType][spot.SensorStatus].scale,
+                        sx: spot.XPos,
+                        sy: spot.YPos,
+                        cropFromCenter: false
+                    });
+
+                    // Draw correct status image on canvas
+                    $mycanvas.drawImage({
+                        x: spot.XPos,
+                        y: spot.YPos,
+                        source: statusIcons[spot.ImageType][spot.SensorStatus].source,
+                        sWidth: statusIcons[spot.ImageType][spot.SensorStatus].sWidth,
+                        sHeight: statusIcons[spot.ImageType][spot.SensorStatus].sHeight,
+                        sx: statusIcons[spot.ImageType][spot.SensorStatus].sx,
+                        sy: statusIcons[spot.ImageType][spot.SensorStatus].sy,
+                        cropFromCenter: statusIcons[spot.ImageType][spot.SensorStatus].cropFromCenter,
+                        scale: statusIcons[spot.ImageType][spot.SensorStatus].scale
+                    });
+                });
+            }
+
+        });
+    </script>
+</body>

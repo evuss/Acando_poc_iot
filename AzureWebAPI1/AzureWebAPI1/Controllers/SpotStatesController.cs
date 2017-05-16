@@ -43,7 +43,7 @@ namespace AzureWebAPI1.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return BadRequest(ModelState);  
             }
 
             if (id != spotState.SpotID)
