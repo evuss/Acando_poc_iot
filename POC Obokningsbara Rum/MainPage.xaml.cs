@@ -306,7 +306,7 @@ namespace POC_Obokningsbara_Rum
             SmtpClient client = new SmtpClient("smtp-mail.outlook.com", 587, false, "takler14@hotmail.com", "lucke1");
             EmailMessage emailMessage = new EmailMessage();
 
-            emailMessage.To.Add(new EmailRecipient("lucas.nilsson@acando.com"));
+            //emailMessage.To.Add(new EmailRecipient("lucas.nilsson@acando.com"));
             emailMessage.CC.Add(new EmailRecipient("tone.pedersen@acando.com"));
             //emailMessage.Bcc.Add(new EmailRecipient("someone3@anotherdomain.com"));
             emailMessage.Subject = "Info from your Raspberry Pi!";

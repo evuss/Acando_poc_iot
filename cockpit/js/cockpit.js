@@ -146,8 +146,23 @@
                         url: spotStatusFormApiUrl, 
                         contentType: "application/json; charset=utf-8",
                         dataType: "jsonp",
-                        jsonp: '$callback',
+                        //jsonp: '$callback',
+                        jsonpCallback: "localJsonpCallback"
                         //data: json,
+                    });
+                });
+                function localJsonpCallback(json) {
+                    console.log("success", json);
+                    if (!json.Error) {
+                        $('#SpotStatusResults').submit();
+                    }
+                    else {
+                        $('#loading').hide();
+                        $('#SpotStatusForm').show();
+                        alert(json.Message);
+                    }
+                }
+                /*
                         success: function (data) {
                             console.log("got data from get sotstatusformapiurl", data);
                              // $.post(spotStatusFormApiUrl, jsonOut, function (data) {	//  API call was successfull
@@ -170,11 +185,8 @@
                         }
                
                     })
-                    // create seasons array and and repeat ajax call until all results are returned 
-                    function callback(result) {
-                        alert(JSON.stringify(result))
-                    }
-				});
+                
+				});*/
 				
 								
 				// Event Hub form -  Send message to event hub
