@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using AzureWebAPI1.Models;
 using System.Data.SqlClient;
+//using System.Web.Http.Cors;
 
 namespace AzureWebAPI1.Models
 {

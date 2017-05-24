@@ -117,78 +117,91 @@
 				// SpotStatus form -  Test retriving Spot statuses
 				////////////////////////////////////////////////////////////////////////////////////////////////
 				var spotStatusForm = $('#SpotStatusForm');
-				spotStatusForm.submit(function(event){
-					// Prevent default form action
-					event.preventDefault();
-					
-					// Get results textarea
-					var taResults = $('#SpotStatusResults');
+                spotStatusForm.submit(function (event) {
+                    // Prevent default form action
+                    event.preventDefault();
 
-					taResults.val('Button pressed...');
-					
-					
-					// Compile Json to send
-					var jsonOut = {
-						'TS': $.trim($('#SpotStatusForm #TS').val())
-					};
-					
-					// Show progress
-					prependWithSeparator(taResults,
-						'Calling backend api...\n\n' +
-						'Sending json:\n' +
-						JSON.stringify(jsonOut,null,2)
-					);
+                    // Get results textarea
+                    var taResults = $('#SpotStatusResults');
 
-						
-					// Call api
+                    taResults.val('Button pressed...');
+
+
+                    // Compile Json to send
+                    var jsonOut = {
+                        'TS': $.trim($('#SpotStatusForm #TS').val())
+                    };
+
+                    // Show progress
+                    prependWithSeparator(taResults,
+                        'Calling backend api...\n\n' +
+                        'Sending json:\n' +
+                        JSON.stringify(jsonOut, null, 2)
+                    );
+
+
+                    // Call api
                     $.ajax({
-                        type: "POST",
-                        url: spotStatusFormApiUrl, 
-                        contentType: "application/json; charset=utf-8",
-                        dataType: "jsonp",
-                        //jsonp: '$callback',
-                        jsonpCallback: "localJsonpCallback"
-                        //data: json,
+                        type: "GET",
+                        headers: { "X-My-Custom-Header": "some value" },
+                        url: spotStatusFormApiUrl
+                    }).done(function (data) {
+                        console.log(data);
+
                     });
-                });
-                function localJsonpCallback(json) {
-                    console.log("success", json);
-                    if (!json.Error) {
-                        $('#SpotStatusResults').submit();
-                    }
-                    else {
-                        $('#loading').hide();
-                        $('#SpotStatusForm').show();
-                        alert(json.Message);
-                    }
-                }
-                /*
-                        success: function (data) {
-                            console.log("got data from get sotstatusformapiurl", data);
-                             // $.post(spotStatusFormApiUrl, jsonOut, function (data) {	//  API call was successfull
-						    // API returned document
-						    if(typeof data.TS !== undefined){
-							    // Success: There is a variable Result
-							    prependWithSeparator(taResults, 'Retrieval was successful\n\nReceived json:\n' + JSON.stringify(data,null,2));
-						    }
-						    else {  // Fail: API call successfull but no result variable
-							    prependWithSeparator(taResults, 'Retrieval failed with "' + data.Result + '"\n\nReceived json:\n' + JSON.stringify(data,null,2));
-							    alert('Retrieval failed! See Result textbox.');
-						    }
-							
-                        },
-                        error: function (data) {  // Fail: Backend not reached
-                            console.log("failed and the data is", data);
-						    prependWithSeparator(taResults, 'Retrieval failed with "Backend not reached"\n\n' + JSON.stringify(data,null,2));
-                            alert('Retrieval failed! See Result textbox.');
-                            
+
+                    /*$.ajax({
+                        type: "GET",
+                        url: spotStatusFormApiUrl,
+                        contentType: "application/json; charset=utf-8",
+                        //dataType: "jsonp",
+
+                        jsonpCallback: success,
+                        crossDomain: true,
+                        headers: {
+
                         }
-               
                     })
+                    function success(data) {
+                        console.log("got data from get sotstatusformapiurl", data);
+                        // $.post(spotStatusFormApiUrl, jsonOut, function (data) {	//  API call was successfull
+                        // API returned document
+                        if (typeof data !== undefined) {
+                            // Success: There is a variable Result
+                            prependWithSeparator(taResults, 'Retrieval was successful\n\nReceived json:\n' + JSON.stringify(data, null, 2));
+                        }
+                        else {  // Fail: API call successfull but no result variable
+                            prependWithSeparator(taResults, 'Retrieval failed with "' + data.Result + '"\n\nReceived json:\n' + JSON.stringify(data, null, 2));
+                            alert('Retrieval failed! See Result textbox.');
+                        }
+
+                    }
+
+                    function error(data) {  // Fail: Backend not reached
+                        console.log("failed and the data is", data);
+                        prependWithSeparator(taResults, 'Retrieval failed with "Backend not reached"\n\n' + JSON.stringify(data, null, 2));
+                        alert('Retrieval failed! See Result textbox.');
+
+                    }
+
+
+                });/*
+                        .done(function (response) {
+                        console.log('Successfully fetched files from Azure.');
+                        console.log(response);
+                        prependWithSeparator(taResults, 'Retrieval failed with "Backend not reached"\n\n' + JSON.stringify(response, null, 2));
+                        window.alert(response);
+                    }).fail(function () {
+                        console.log('Fetching files from Azure failed.');
+                        window.alert('fail');
+                    });
+
+                    
+                      
                 
-				});*/
-				
-								
+				*/
+ 
+                
 				// Event Hub form -  Send message to event hub
 				////////////////////////////////////////////////////////////////////////////////////////////////
 				var EventHubForm = $('#EventHubForm');

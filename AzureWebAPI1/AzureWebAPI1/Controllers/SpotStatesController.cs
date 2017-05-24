@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using AzureWebAPI1.Models;
+//using System.Web.Http.Cors;
 
 namespace AzureWebAPI1.Controllers
 {
@@ -26,6 +27,7 @@ namespace AzureWebAPI1.Controllers
         
         // GET: api/SpotStates/5
         [ResponseType(typeof(SpotState))]
+       // [EnableCors(origins: "*", headers: "*", methods: "*")]
         public async Task<IHttpActionResult> GetSpotState(string id)//
         {
             SpotState spotState = await db.SpotStates.Where(x => x.TS == db.SpotStates.Max(p => p.TS)).FirstAsync();
@@ -35,6 +37,7 @@ namespace AzureWebAPI1.Controllers
             }
 
             return Ok(spotState);
+            //return CreatedAtRoute("DefaultApi", new { id = spotState }, spotState);
         }
         /*
         // PUT: api/SpotStates/5
